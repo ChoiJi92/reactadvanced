@@ -4,17 +4,16 @@ import styled from "styled-components";
 import { IoHomeSharp } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import { auth } from "../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 
 const Header = ({ is_login }) => {
   const user = useSelector((state) => state.user.currentuser);
-  console.log(user);
   const history = useHistory();
   return (
     <>
       <IoHomeSharp
         style={{
-          color: "blue",
+          color: "#3399ff",
           fontSize: "xx-large",
           cursor: "pointer",
           marginLeft: "10px",
@@ -49,7 +48,7 @@ const Button = styled.div`
   align-items: center;
   button {
     cursor: pointer;
-    margin: 0 20px;
+    margin-left: 20px;
     width: 30%;
     height: 30px;
     background-color: #3399ff;

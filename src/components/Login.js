@@ -14,6 +14,7 @@ const Login = () => {
     const [id, setId] = useState()
     const [password, setPassword] = useState()
     const loginFB = async () => {
+      try{
         const user = await signInWithEmailAndPassword(
             auth,
             id,
@@ -22,6 +23,10 @@ const Login = () => {
         await dispatch(loadUserFB(auth.currentUser?.email));
             console.log(user)
             history.push('/')
+        }
+        catch(err){
+          window.alert('아이디와 비밀번호를 확인해 주세요!')
+        }
         
     }
   

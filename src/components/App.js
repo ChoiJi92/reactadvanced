@@ -63,10 +63,10 @@ function App() {
           {is_login && is_loaded ? <Write /> : <Error />}
         </Route>
         <Route path="/update/:id" exact>
-          {is_login && is_loaded && <Update />}
+          {is_loaded && <Update />}
         </Route>
         <Route path="/detail/:id" exact>
-          {is_login && is_loaded && <Detail />}
+          {is_loaded && <Detail is_login={is_login}/>}
         </Route>
       </Switch>
     </div>
@@ -77,19 +77,9 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 80%;
   height: 80px;
+  margin: 0 auto;
 `;
-// const Button = styled.div`
-//   width: 20%;
-//   button {
-//     cursor: pointer;
-//     margin-right: 20px;
-//     width: 30%;
-//     height: 30px;
-//     background-color: #3399ff;
-//     color: white;
-//     border: none;
-//   }
-// `;
+
 export default App;

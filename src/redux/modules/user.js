@@ -40,6 +40,7 @@ export function createUser(user){
 
 export const loadUserFB = (user_id) => {
     return async function(dispatch){
+        try{
         const docRef= collection(db,'users')
         const q = query(docRef, where('user_id', '==', user_id))
         let currentuser;
@@ -49,6 +50,10 @@ export const loadUserFB = (user_id) => {
         }
         )
         dispatch(loadUser(currentuser))
+    }
+    catch(err){
+        
+    }
     }
 }
 

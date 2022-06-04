@@ -13,7 +13,6 @@ const Update = () => {
   const data = useSelector((state) => state.post.post_list).filter(
     (v) => v.id === params.id
   );
-  console.log(data);
   const dispatch = useDispatch();
   const history = useHistory();
   const storage = getStorage();
@@ -156,6 +155,8 @@ const Head = styled.div`
 `;
 const Ridio = styled.div`
   color: ${(props) => (props.check ? "blue" : "black")};
+  
+  
 `;
 const Layout = styled.div`
   margin-top: 20px;

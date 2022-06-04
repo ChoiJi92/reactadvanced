@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import moment from "moment";
 import { createCommentFB, loadCommentFB } from "../redux/modules/comment";
-const Detail = () => {
+const Detail = ({is_login}) => {
   const params = useParams();
   const comment = useRef();
   const dispatch = useDispatch();
@@ -85,8 +85,10 @@ const Detail = () => {
           </Bottom>
         </>
       )}
+      {is_login && <>
       <input ref={comment} placeholder="댓글 내용을 입력하세요  :)"></input>
       <button onClick={addcomment}>추가</button>
+      </>}
       {comment_list.map(v => {
           return(
           <Comment>

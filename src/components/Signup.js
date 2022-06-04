@@ -9,8 +9,6 @@ import { createUserFB } from "../redux/modules/user";
 const Signup = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  // const userlist = useSelector((state) => state.user.user_list);
-  // console.log(userlist);
   const id = React.useRef();
   const nickname = React.useRef();
   const password = React.useRef();

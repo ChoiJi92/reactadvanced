@@ -14,8 +14,6 @@ const Main = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.post.post_list);
   const user = auth.currentUser?.email;
-  console.log(user);
-  console.log(data);
   return (
     <Container>
       {data.map((v) => {
