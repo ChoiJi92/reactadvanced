@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createUserFB } from "../redux/modules/user";
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const id = React.useRef();
   const nickname = React.useRef();
   const password = React.useRef();
@@ -33,7 +33,7 @@ const Signup = () => {
             name: nickname.current.value,
           })
         );
-        history.push("/");
+        navigate("/");
       } else {
         alert("비밀번호가 일치하지 않습니다.");
       }

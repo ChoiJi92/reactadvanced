@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loadUserFB } from "../redux/modules/user";
 
@@ -10,7 +10,7 @@ const Login = () => {
     // const id = React.useRef()
     // const password = React.useRef()
     const dispatch = useDispatch()
-    const history = useHistory()
+    const navigate = useNavigate()
     const [id, setId] = useState()
     const [password, setPassword] = useState()
     const loginFB = async () => {
@@ -22,7 +22,7 @@ const Login = () => {
         )
         await dispatch(loadUserFB(auth.currentUser?.email));
             console.log(user)
-            history.push('/')
+            navigate('/')
         }
         catch(err){
           window.alert('아이디와 비밀번호를 확인해 주세요!')

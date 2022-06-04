@@ -2,13 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { IoHomeSharp } from "react-icons/io5";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 
 const Header = ({ is_login }) => {
   const user = useSelector((state) => state.user.currentuser);
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <>
       <IoHomeSharp
@@ -18,12 +18,12 @@ const Header = ({ is_login }) => {
           cursor: "pointer",
           marginLeft: "10px",
         }}
-        onClick={() => history.push("/")}
+        onClick={() => navigate("/")}
       />
       {!is_login ? (
         <Button>
-          <button onClick={() => history.push("/login")}>로그인</button>
-          <button onClick={() => history.push("/signup")}>회원가입</button>
+          <button onClick={() => navigate("/login")}>로그인</button>
+          <button onClick={() => navigate("/signup")}>회원가입</button>
         </Button>
       ) : (
         <Button>

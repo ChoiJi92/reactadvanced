@@ -4,16 +4,15 @@ import { auth } from "../firebase";
 import { ref, uploadBytes, getStorage, getDownloadURL } from "firebase/storage";
 import { async } from "@firebase/util";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createPostFB } from "../redux/modules/post";
 import styled from "styled-components";
 
 const Write = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const storage = getStorage();
   const user = useSelector((state) => state.user.currentuser)
-  console.log(user)
   const [image, setImage] = React.useState();
   const comments = React.useRef();
   const [posting, setPosting] = React.useState();
@@ -38,10 +37,11 @@ const Write = () => {
         comment: comments.current.value,
         user_id: auth.currentUser?.email,
         user_name : user,
-        layout : layout
+        layout : layout,
+        comment_count:0
       })
     );
-    history.goBack();
+    navigate.goBack();
   };
   const onChange = (e) => {
     setPosting(e.target.value);

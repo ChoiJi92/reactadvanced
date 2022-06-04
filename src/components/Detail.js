@@ -1,33 +1,51 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import moment from "moment";
 import { createCommentFB, loadCommentFB } from "../redux/modules/comment";
+import Commentlist from "./Commentlist";
+import { countFB, heartPlusFB,heartMinusFB } from "../redux/modules/post";
+import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
+import { auth } from "../firebase";
 const Detail = ({is_login}) => {
   const params = useParams();
-  const comment = useRef();
   const dispatch = useDispatch();
+  const [isloaded, setIsloaded] = useState(false)
+  const [comment, setComment] = useState()
   const data = useSelector((state) => state.post.post_list).filter(
     (v) => v.id === params.id
   );
+  console.log('나는 데이터',data)
+  const [heartcheck, setHeartcheck] = useState(false);
+  const onChange = (e) => {
+    setComment(e.target.value)
+  }
   console.log(data[0].user_name)
   const user = useSelector((state)=>state.user.currentuser)
+  const user_id = auth.currentUser?.email;
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
-  const addcomment = () => {
-    if (comment.current.value !== "") {
-      dispatch(
+  const addcomment = async() => {
+    if (comment !== "") {
+     await dispatch(
         createCommentFB({
           id: params.id,
-          user_name: data[0].user_name,
-          comment: comment.current.value,
+          user_name: user,
+          comment: comment,
           date: now,
         })
       );
+      await dispatch(countFB(params.id))
+      setComment('')
     }
   };
-  const comment_list = useSelector((state)=> state.comment.comment_list)
-  console.log(comment_list)
+  useEffect(()=>{
+    async function load(){
+      await dispatch(loadCommentFB(params.id))
+      setIsloaded(true)
+    }
+    load()
+  },[])
   return (
     <Container>
       {data[0].layout === "right" ? (
@@ -42,10 +60,18 @@ const Detail = ({is_login}) => {
           </Layout>
           <Bottom>
             <div>
-              <p>좋아요 0개</p>
-              <p>댓글 {comment_list.length}개</p>
+              <p>좋아요 {(data[0].heart_count).length}개</p>
+              <p>댓글 {data[0].comment_count}개</p>
             </div>
-            <p>하트</p>
+            {!((data[0].heart_count).includes(user_id))  ? (
+                  <BsSuitHeart size="25px" onClick={() => {
+                    setHeartcheck((prev) => !prev)
+                    dispatch(heartPlusFB(data[0].id,user_id))}} cursor='pointer'></BsSuitHeart>
+                ) : (
+                  <BsSuitHeartFill color="#FF66B2" size="25px"onClick={() => {
+                    setHeartcheck((prev) => !prev)
+                    dispatch(heartMinusFB(data[0].id,user_id))}} cursor='pointer'></BsSuitHeartFill>
+                )}
           </Bottom>
         </>
       ) : data[0].layout === "left" ? (
@@ -60,10 +86,18 @@ const Detail = ({is_login}) => {
           </Layout>
           <Bottom>
             <div>
-              <p>좋아요 0개</p>
-              <p>댓글 0개</p>
+              <p>좋아요 {(data[0].heart_count).length}개</p>
+              <p>댓글 {data[0].comment_count}개</p>
             </div>
-            <p>하트</p>
+            {!((data[0].heart_count).includes(user_id)) ? (
+                  <BsSuitHeart size="25px" onClick={() => {
+                    setHeartcheck((prev) => !prev)
+                    dispatch(heartPlusFB(data[0].id,user_id))}} cursor='pointer'></BsSuitHeart>
+                ) : (
+                  <BsSuitHeartFill color="#FF66B2" size="25px"onClick={() => {
+                    setHeartcheck((prev) => !prev)
+                    dispatch(heartMinusFB(data[0].id,user_id))}} cursor='pointer'></BsSuitHeartFill>
+                )}
           </Bottom>
         </>
       ) : (
@@ -78,26 +112,26 @@ const Detail = ({is_login}) => {
           </Layoutbottom>
           <Bottom>
             <div>
-              <p>좋아요 0개</p>
-              <p>댓글 0개</p>
+              <p>좋아요 {(data[0].heart_count).length}개</p>
+              <p>댓글 {data[0].comment_count}개</p>
             </div>
-            <p>하트</p>
+            {!((data[0].heart_count).includes(user_id))  ? (
+                  <BsSuitHeart size="25px" onClick={() => {
+                    setHeartcheck((prev) => !prev)
+                    dispatch(heartPlusFB(data[0].id,user_id))}} cursor='pointer'></BsSuitHeart>
+                ) : (
+                  <BsSuitHeartFill color="#FF66B2" size="25px"onClick={() => {
+                    setHeartcheck((prev) => !prev)
+                    dispatch(heartMinusFB(data[0].id, user_id))}} cursor='pointer'></BsSuitHeartFill>
+                )}
           </Bottom>
         </>
       )}
       {is_login && <>
-      <input ref={comment} placeholder="댓글 내용을 입력하세요  :)"></input>
+      <input value={comment} onChange={onChange} placeholder="댓글 내용을 입력하세요  :)"></input>
       <button onClick={addcomment}>추가</button>
       </>}
-      {comment_list.map(v => {
-          return(
-          <Comment>
-              <p>{v.user_name}</p>
-              <p>{v.comment}</p>
-              <p>{v.date}</p>
-          </Comment>
-          )
-      })}
+      {isloaded && <Commentlist/>}
     </Container>
   );
 };
@@ -179,14 +213,6 @@ const Layoutbottom = styled.div`
     background-size: cover;
   }
 `;
-const Comment =styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-`
 const Bottom = styled.div`
   width: 100%;
   height: 100%;

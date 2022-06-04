@@ -4,7 +4,7 @@ import { auth } from "../firebase";
 import { ref, uploadBytes, getStorage, getDownloadURL } from "firebase/storage";
 import { async } from "@firebase/util";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { updatePostFB } from "../redux/modules/post";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ const Update = () => {
     (v) => v.id === params.id
   );
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const storage = getStorage();
   const user = useSelector((state) => state.user.currentuser);
   const [image, setImage] = React.useState(data[0].image);
@@ -44,9 +44,10 @@ const Update = () => {
         user_id: auth.currentUser?.email,
         user_name: user,
         layout: layout,
+        comment_count:data[0].comment_count
       })
     );
-    history.goBack();
+    navigate(-1);
   };
   const onChange = (e) => {
     setPosting(e.target.value);

@@ -1,10 +1,10 @@
 
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Error = () => {
-    const history = useHistory()
+    const navigate = useNavigate()
 
     return (
         <Container>
@@ -13,7 +13,7 @@ const Error = () => {
         </p>
         <p>로그인 후 글 쓰기가 가능해요!!</p>
         <Button onClick={() => {
-            history.push('/login')
+            navigate('/login')
         }}>로그인 하러 가기</Button>
         </Container>
     )
