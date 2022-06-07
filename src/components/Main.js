@@ -20,6 +20,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.post.post_list);
   const user = auth.currentUser?.email;
+  const [heartCheck, setHeartCheck] = useState('')
   const lastdate = useSelector((state) => state.post.lastdate); // date를 기준으로 정렬해서 가져오기때문에 마지막 요소의 date를 알아야함
   const [target, setTarget] = useState(null);
   // 무한스크롤 관련 intersection observer
@@ -78,10 +79,10 @@ const Main = () => {
                   navigate(`/detail/${v.id}`);
                 }}
               >
+                {(heartCheck === v.id) && <Heart>
+                  <BsSuitHeartFill size="100%"/>
+                </Heart>}
                 <p>{v.comment}</p>
-                <Heart>
-                  <BsSuitHeartFill size="100%" color="#FF66B2" />
-                </Heart>
                 <img src={v.image[0]} alt=""></img>
               </Layout>
               <Bottom ref={i === data.length - 1 ? setTarget : null}>
@@ -93,6 +94,7 @@ const Main = () => {
                   <BsSuitHeart
                     size="25px"
                     onClick={() => {
+                      setHeartCheck(v.id)
                       dispatch(heartPlusFB(v.id, user));
                     }}
                     cursor="pointer"
@@ -102,6 +104,7 @@ const Main = () => {
                     color="#FF66B2"
                     size="25px"
                     onClick={() => {
+                      setHeartCheck('')
                       dispatch(heartMinusFB(v.id, user));
                     }}
                     cursor="pointer"
@@ -143,6 +146,9 @@ const Main = () => {
                 }}
               >
                 <img src={v.image[0]} alt=""></img>
+                {(heartCheck === v.id) && <Heart>
+                  <BsSuitHeartFill size="100%"/>
+                </Heart>}
                 <p>{v.comment}</p>
               </Layout>
               <Bottom ref={i === data.length - 1 ? setTarget : null}>
@@ -154,6 +160,7 @@ const Main = () => {
                   <BsSuitHeart
                     size="25px"
                     onClick={() => {
+                      setHeartCheck(v.id)
                       dispatch(heartPlusFB(v.id, user));
                     }}
                     cursor="pointer"
@@ -163,6 +170,7 @@ const Main = () => {
                     color="#FF66B2"
                     size="25px"
                     onClick={() => {
+                      setHeartCheck('')
                       dispatch(heartMinusFB(v.id, user));
                     }}
                     cursor="pointer"
@@ -204,6 +212,9 @@ const Main = () => {
                 }}
               >
                 <p>{v.comment}</p>
+                {(heartCheck === v.id) && <Heart>
+                  <BsSuitHeartFill size="90%"/>
+                </Heart>}
                 <img src={v.image[0]} alt=""></img>
               </Layoutbottom>
               <Bottom ref={i === data.length - 1 ? setTarget : null}>
@@ -215,6 +226,7 @@ const Main = () => {
                   <BsSuitHeart
                     size="25px"
                     onClick={() => {
+                      setHeartCheck(v.id)
                       dispatch(heartPlusFB(v.id, user));
                     }}
                     cursor="pointer"
@@ -224,6 +236,7 @@ const Main = () => {
                     color="#FF66B2"
                     size="25px"
                     onClick={() => {
+                      setHeartCheck('')
                       dispatch(heartMinusFB(v.id, user));
                     }}
                     cursor="pointer"
@@ -296,11 +309,11 @@ const Head = styled.div`
 const Layout = styled.div`
   margin-top: 20px;
   width: 100%;
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   & > p {
     text-align: center;
     word-break: break-all;
@@ -317,6 +330,7 @@ const Layoutbottom = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   & > p {
     word-break: break-all;
@@ -345,16 +359,22 @@ const heartAnimation = keyframes`
 0%{
   opacity: 0;
 }
-50%{
+40%{
   opacity: 1;
+  color: red;
 }
 100%{
   opacity: 0;
   
 }
 `;
-const Heart = styled.div`
-  animation : ${heartAnimation} 2s  alternate;
-  /* display : none */
+const Heart = styled.div` 
+  &  > * {
+    animation : ${heartAnimation} 2s 1s linear alternate;
+    color: transparent;
+    position: absolute;
+    left: 5%;
+    bottom:0;
+  }
 `;
 export default Main;

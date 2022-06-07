@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled ,{keyframes}from "styled-components";
 import moment from "moment";
 import { createCommentFB, loadCommentFB } from "../redux/modules/comment";
 import Commentlist from "./Commentlist";
@@ -16,6 +16,7 @@ const Detail = ({ is_login }) => {
   const dispatch = useDispatch();
   const [isloaded, setIsloaded] = useState(false);
   const [comment, setComment] = useState();
+  const [heartCheck, setHeartCheck] = useState(false)
   const data = useSelector((state) => state.post.post_list).filter(
     (v) => v.id === params.id
   );
@@ -56,7 +57,9 @@ const Detail = ({ is_login }) => {
           </Head>
           <Layout>
             <p>{data[0].comment}</p>
-            {/* <img src={data[0].image} alt=""></img> */}
+            {heartCheck && <Heart>
+                  <BsSuitHeartFill size="100%"/>
+                </Heart>}
             <div>
               <Slide data={data[0].image} />
             </div>
@@ -70,6 +73,7 @@ const Detail = ({ is_login }) => {
               <BsSuitHeart
                 size="25px"
                 onClick={() => {
+                  setHeartCheck(true)
                   dispatch(heartPlusFB(data[0].id, user_id));
                 }}
                 cursor="pointer"
@@ -79,6 +83,7 @@ const Detail = ({ is_login }) => {
                 color="#FF66B2"
                 size="25px"
                 onClick={() => {
+                  setHeartCheck(false)
                   dispatch(heartMinusFB(data[0].id, user_id));
                 }}
                 cursor="pointer"
@@ -93,8 +98,10 @@ const Detail = ({ is_login }) => {
             <div>{data[0].date}</div>
           </Head>
           <Layout>
-            {/* <img src={data[0].image} alt=""></img> */}
             <Slide data={data[0].image} />
+            {heartCheck && <Heart>
+                  <BsSuitHeartFill size="100%"/>
+                </Heart>}
             <p>{data[0].comment}</p>
           </Layout>
           <Bottom>
@@ -106,6 +113,7 @@ const Detail = ({ is_login }) => {
               <BsSuitHeart
                 size="25px"
                 onClick={() => {
+                  setHeartCheck(true)
                   dispatch(heartPlusFB(data[0].id, user_id));
                 }}
                 cursor="pointer"
@@ -115,6 +123,7 @@ const Detail = ({ is_login }) => {
                 color="#FF66B2"
                 size="25px"
                 onClick={() => {
+                  setHeartCheck(false)
                   dispatch(heartMinusFB(data[0].id, user_id));
                 }}
                 cursor="pointer"
@@ -130,7 +139,9 @@ const Detail = ({ is_login }) => {
           </Head>
           <Layoutbottom>
             <p>{data[0].comment}</p>
-            {/* <img src={data[0].image} alt=""></img> */}
+            {heartCheck && <Heart>
+                  <BsSuitHeartFill size="100%"/>
+                </Heart>}
             <BottomSlide data={data[0].image} />
           </Layoutbottom>
           <Bottom>
@@ -142,6 +153,7 @@ const Detail = ({ is_login }) => {
               <BsSuitHeart
                 size="25px"
                 onClick={() => {
+                  setHeartCheck(true)
                   dispatch(heartPlusFB(data[0].id, user_id));
                 }}
                 cursor="pointer"
@@ -151,6 +163,7 @@ const Detail = ({ is_login }) => {
                 color="#FF66B2"
                 size="25px"
                 onClick={() => {
+                  setHeartCheck(false)
                   dispatch(heartMinusFB(data[0].id, user_id));
                 }}
                 cursor="pointer"
@@ -222,6 +235,7 @@ const Layout = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   & > p {
     text-align: center;
     word-break: break-all;
@@ -233,6 +247,7 @@ const Layoutbottom = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   & > p {
     word-break: break-all;
@@ -250,6 +265,29 @@ const Bottom = styled.div`
   p {
     display: inline;
     margin: 10px;
+  }
+`;
+const heartAnimation = keyframes`
+0%{
+  opacity: 0;
+}
+40%{
+  opacity: 1;
+  color: red;
+}
+100%{
+  opacity: 0;
+  
+}
+`;
+const Heart = styled.div` 
+  &  > * {
+    animation : ${heartAnimation} 2s 1s linear alternate;
+    color: transparent;
+    position: absolute;
+    left: 5%;
+    bottom:0;
+    z-index: 1;
   }
 `;
 export default Detail;

@@ -74,7 +74,7 @@ const Write = () => {
         <label htmlFor="upload">파일 선택</label>
         <input type="file" multiple id="upload" onChange={uploadImage}></input>
       </Head>
-      <Ridio check={layout}>
+      <Ridio check={layout} style={layout === 'right' ? {color : 'blue'} : {color : 'black'}}>
         <input
           type="radio"
           id="right"
@@ -89,13 +89,9 @@ const Write = () => {
       </Ridio>
       <Layout>
         <p>{posting}</p>
-        {/* <img
-          src={image[0]}
-          alt=""
-        ></img> */}
-        {image && <Slide data={image} />}
+        <Slide data={image} />
       </Layout>
-      <Ridio check={layout}>
+      <Ridio check={layout} style={layout === 'left' ? {color : 'blue'} : {color : 'black'}}>
         <input
           type="radio"
           id="left"
@@ -112,7 +108,7 @@ const Write = () => {
         <Slide data={image} />
         <p>{posting}</p>
       </Layout>
-      <Ridio check={layout}>
+      <Ridio check={layout} style={layout === 'bottom' ? {color : 'blue'} : {color : 'black'}}>
         <input
           type="radio"
           id="bottom"
@@ -173,7 +169,6 @@ const Head = styled.div`
   }
 `;
 const Ridio = styled.div`
-  color: ${(props) => (props.check ? "blue" : "black")};
   margin-top: 100px;
 `;
 const Layout = styled.div`
