@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 const Commentlist = () => {
   const comment_list = useSelector((state) => state.comment.comment_list);
-  console.log(comment_list);
   return (
     <Comment>
       {comment_list.map((v) => (

@@ -1,4 +1,6 @@
 import React from "react";
+import Slide from "./Slide";
+import BottomSlide from './BottomSlide'
 import moment from "moment";
 import { auth } from "../firebase";
 import { ref, uploadBytes, getStorage, getDownloadURL } from "firebase/storage";
@@ -18,36 +20,54 @@ const Update = () => {
   const storage = getStorage();
   const user = useSelector((state) => state.user.currentuser);
   const [image, setImage] = React.useState(data[0].image);
+  const [fileList, setFileList] = React.useState([])
   const [posting, setPosting] = React.useState(data[0].comment);
   const [input, setInput] = React.useState(data[0].comment);
   const [layout, setLayout] = React.useState();
   const comments = React.useRef();
-  const uploadImage = async (e) => {
-    const uploaded_file = await uploadBytes(
-      ref(storage, `images/${e.target.files[0].name}`),
-      e.target.files[0]
-    );
-    console.log(uploaded_file);
-
-    const file_url = await getDownloadURL(uploaded_file.ref);
-    console.log(file_url);
-    setImage(file_url);
+  const uploadImage = (e) => {
+    let imagelist = [];
+    let filelist = [];
+    for (let i = 0; i < e.target.files.length; i++) {
+      console.log(e.target.files);
+      filelist[i] = e.target.files[i]
+      
+      let reader = new FileReader();    // 이미지 미리보기!! 
+      reader.readAsDataURL(e.target.files[i]);
+      reader.onload = () => {
+        imagelist[i] = reader.result
+        setImage([...imagelist])
+      }; 
+    }
+    setFileList([...filelist])
   };
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
-  const updatecomment = () => {
-    dispatch(
+  const updatecomment = async () => {
+    let realImage =[]
+    for(let i = 0; i<fileList.length; i++){
+    const uploaded_file = await uploadBytes(
+        ref(storage, `images/${fileList[i].name}`),
+        fileList[i]
+      );
+      console.log(uploaded_file);
+      const file_url = await getDownloadURL(uploaded_file.ref);
+      console.log(file_url);
+      realImage.push(file_url)
+    }
+    await dispatch(
       updatePostFB({
         id: params.id,
         date: now,
-        image: image,
+        image: realImage,
         comment: comments.current.value,
         user_id: auth.currentUser?.email,
         user_name: user,
         layout: layout,
-        comment_count:data[0].comment_count
+        comment_count:data[0].comment_count,
+        heart_count : data[0].heart_count
       })
     );
-    navigate(-1);
+    navigate('/');
   };
   const onChange = (e) => {
     setPosting(e.target.value);
@@ -56,9 +76,9 @@ const Update = () => {
   return (
     <Container>
       <Head>
-        <div>게시글 작성</div>
+        <div>게시글 수정</div>
         <label htmlFor="upload">파일 선택</label>
-        <input type="file" id="upload" onChange={uploadImage}></input>
+        <input type="file" multiple id="upload" onChange={uploadImage}></input>
       </Head>
       <Ridio check={layout}>
         <input
@@ -75,7 +95,7 @@ const Update = () => {
       </Ridio>
       <Layout>
         <p>{posting}</p>
-        <img src={image} alt=""></img>
+        <Slide data ={image} />
       </Layout>
       <Ridio check={layout}>
         <input
@@ -91,7 +111,7 @@ const Update = () => {
         </label>
       </Ridio>
       <Layout>
-        <img src={image} alt=""></img>
+      <Slide data ={image} />
         <p>{posting}</p>
       </Layout>
       <Ridio check={layout}>
@@ -109,7 +129,7 @@ const Update = () => {
       </Ridio>
       <Layoutbottom>
         <p>{posting}</p>
-        <img src={image} alt=""></img>
+        <BottomSlide data ={image} />
       </Layoutbottom>
       <Comment>
         <label htmlFor="comment">게시물 내용</label>
@@ -130,7 +150,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   padding: 20px;
   margin: 20px auto;
   width: 80%;
@@ -156,7 +176,7 @@ const Head = styled.div`
 `;
 const Ridio = styled.div`
   color: ${(props) => (props.check ? "blue" : "black")};
-  
+  margin-top: 100px;
   
 `;
 const Layout = styled.div`
@@ -173,12 +193,7 @@ const Layout = styled.div`
     width: 80%;
     margin: 20px;
   }
-  & > img {
-    width: 400px;
-    height: 400px;
-    background-image: url(https://user-images.githubusercontent.com/75834421/124501682-fb25fd00-ddfc-11eb-93ec-c0330dff399b.jpg);
-    background-size: cover;
-  }
+  
 `;
 const Layoutbottom = styled.div`
   margin-top: 20px;
@@ -189,18 +204,13 @@ const Layoutbottom = styled.div`
   & > p {
     word-break: break-all;
     width: 80%;
-    margin: 20px;
+    
   }
-  & > img {
-    width: 100%;
-    height: 100vh;
-    background-image: url(https://user-images.githubusercontent.com/75834421/124501682-fb25fd00-ddfc-11eb-93ec-c0330dff399b.jpg);
-    background-size: cover;
-  }
+ 
 `;
 const Comment = styled.div`
   width: 100%;
-  margin: 20px 0;
+  margin-top: 60px;
   & > textarea {
     width: 100%;
     height: 200px;
@@ -215,5 +225,6 @@ const Button = styled.button`
   color: white;
   border: none;
   font-size: large;
+  cursor: pointer;
 `;
 export default Update;

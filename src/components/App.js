@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
+import Header from "./Header";
 import Login from "./Login";
 import Detail from "./Detail";
 import Main from "./Main";
@@ -9,13 +12,15 @@ import Write from "./Write";
 import Update from "./Update";
 import Error from "./Error";
 
+
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loadPostFB } from "../redux/modules/post";
 import { loadUserFB } from "../redux/modules/user";
-import Header from "./Header";
+
+
 
 function App() {
   const [is_login, setIsLogin] = React.useState(false);
@@ -43,22 +48,20 @@ function App() {
   }, [dispatch]);
   return (
     <div className="App">
-      <Container>
-       {is_loaded && <Header is_login={is_login}/>}
-      </Container>
+      <Container>{is_loaded && <Header is_login={is_login} />}</Container>
       <Routes>
-        <Route path="/login" exact element={<Login/>}>
-        </Route>
-        <Route path="/signup" exact element={<Signup />}>
-        </Route>
-        <Route path="/" exact element={is_loaded && <Main />}>
-        </Route>
-        <Route path="/write" exact element={is_login && is_loaded ? <Write /> : <Error />}>
-        </Route>
-        <Route path="/update/:id" exact element={is_loaded && <Update />}>
-        </Route>
-        <Route path="/detail/:id" exact element={is_loaded && <Detail is_login={is_login}/>}>
-        </Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/" element={is_loaded && <Main />}></Route>
+        <Route
+          path="/write"
+          element={is_login && is_loaded ? <Write /> : <Error />}
+        ></Route>
+        <Route path="/update/:id" element={is_loaded && <Update />}></Route>
+        <Route
+          path="/detail/:id"
+          element={is_loaded && <Detail is_login={is_login} />}
+        ></Route>
       </Routes>
     </div>
   );

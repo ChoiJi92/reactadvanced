@@ -47,10 +47,8 @@ export const loadCommentFB = (id) => {
       comment_data.forEach((doc) => {
         comment_list.push({ ...doc.data() });
       });
-      console.log("나는 미들웨어", comment_list);
       dispatch(loadComment(comment_list));
     } catch (err) {
-      console.log(err);
     }
   };
 };

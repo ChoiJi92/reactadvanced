@@ -5,20 +5,23 @@ import { useNavigate } from "react-router-dom";
 import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { loadCommentFB } from "../redux/modules/comment";
-import { deletePostFB, moreloadPostFB ,heartPlusFB, heartMinusFB} from "../redux/modules/post";
+import {
+  deletePostFB,
+  moreloadPostFB,
+  heartPlusFB,
+  heartMinusFB,
+} from "../redux/modules/post";
 import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.post.post_list);
-  console.log(data)
   const user = auth.currentUser?.email;
   const lastdate = useSelector((state) => state.post.lastdate); // date를 기준으로 정렬해서 가져오기때문에 마지막 요소의 date를 알아야함
   const [target, setTarget] = useState(null);
-  const [heartcheck, setHeartcheck] = useState(false);
   // 무한스크롤 관련 intersection observer
   const onIntersect = async ([entry], observer) => {
     //entry.isIntersecting은 내가 지금 target을 보고있니?라는 뜻 그 요소가 화면에 들어오면 true 그전엔 false
@@ -39,7 +42,7 @@ const Main = () => {
       observer && observer.disconnect();
     };
   }, [target]);
-  
+
   return (
     <Container>
       {data.map((v, i) => {
@@ -76,21 +79,33 @@ const Main = () => {
                 }}
               >
                 <p>{v.comment}</p>
-                <img src={v.image} alt=""></img>
+                <Heart>
+                  <BsSuitHeartFill size="100%" color="#FF66B2" />
+                </Heart>
+                <img src={v.image[0]} alt=""></img>
               </Layout>
               <Bottom ref={i === data.length - 1 ? setTarget : null}>
                 <div>
-                  <p>좋아요 {(v.heart_count).length}개</p>
+                  <p>좋아요 {v.heart_count.length}개</p>
                   <p>댓글 {v.comment_count}개</p>
                 </div>
-                {!((v.heart_count).includes(user)) ? (
-                  <BsSuitHeart size="25px" onClick={() => {
-                    setHeartcheck((prev) => !prev)
-                    dispatch(heartPlusFB(v.id,user))}} cursor='pointer'></BsSuitHeart>
+                {!v.heart_count.includes(user) ? (
+                  <BsSuitHeart
+                    size="25px"
+                    onClick={() => {
+                      dispatch(heartPlusFB(v.id, user));
+                    }}
+                    cursor="pointer"
+                  ></BsSuitHeart>
                 ) : (
-                  <BsSuitHeartFill color="#FF66B2" size="25px"onClick={() => {
-                    setHeartcheck((prev) => !prev)
-                    dispatch(heartMinusFB(v.id,user))}} cursor='pointer'></BsSuitHeartFill>
+                  <BsSuitHeartFill
+                    color="#FF66B2"
+                    size="25px"
+                    onClick={() => {
+                      dispatch(heartMinusFB(v.id, user));
+                    }}
+                    cursor="pointer"
+                  ></BsSuitHeartFill>
                 )}
               </Bottom>
             </>
@@ -124,26 +139,34 @@ const Main = () => {
               </Head>
               <Layout
                 onClick={() => {
-                  dispatch(loadCommentFB(v.id));
                   navigate(`/detail/${v.id}`);
                 }}
               >
-                <img src={v.image} alt=""></img>
+                <img src={v.image[0]} alt=""></img>
                 <p>{v.comment}</p>
               </Layout>
               <Bottom ref={i === data.length - 1 ? setTarget : null}>
                 <div>
-                  <p>좋아요 {(v.heart_count).length}개</p>
+                  <p>좋아요 {v.heart_count.length}개</p>
                   <p>댓글 {v.comment_count}개</p>
                 </div>
-                {!((v.heart_count).includes(user)) ? (
-                  <BsSuitHeart size="25px" onClick={() => {
-                    setHeartcheck((prev) => !prev)
-                    dispatch(heartPlusFB(v.id,user))}} cursor='pointer'></BsSuitHeart>
+                {!v.heart_count.includes(user) ? (
+                  <BsSuitHeart
+                    size="25px"
+                    onClick={() => {
+                      dispatch(heartPlusFB(v.id, user));
+                    }}
+                    cursor="pointer"
+                  ></BsSuitHeart>
                 ) : (
-                  <BsSuitHeartFill color="#FF66B2" size="25px"onClick={() => {
-                    setHeartcheck((prev) => !prev)
-                    dispatch(heartMinusFB(v.id,user))}} cursor='pointer'></BsSuitHeartFill>
+                  <BsSuitHeartFill
+                    color="#FF66B2"
+                    size="25px"
+                    onClick={() => {
+                      dispatch(heartMinusFB(v.id, user));
+                    }}
+                    cursor="pointer"
+                  ></BsSuitHeartFill>
                 )}
               </Bottom>
             </>
@@ -177,26 +200,34 @@ const Main = () => {
               </Head>
               <Layoutbottom
                 onClick={() => {
-                  dispatch(loadCommentFB(v.id));
                   navigate(`/detail/${v.id}`);
                 }}
               >
                 <p>{v.comment}</p>
-                <img src={v.image} alt=""></img>
+                <img src={v.image[0]} alt=""></img>
               </Layoutbottom>
               <Bottom ref={i === data.length - 1 ? setTarget : null}>
                 <div>
-                  <p>좋아요 {(v.heart_count).length}개</p>
+                  <p>좋아요 {v.heart_count.length}개</p>
                   <p>댓글 {v.comment_count}개</p>
                 </div>
-                {!((v.heart_count).includes(user)) ? (
-                  <BsSuitHeart size="25px" onClick={() => {
-                    setHeartcheck((prev) => !prev)
-                    dispatch(heartPlusFB(v.id,user))}} cursor='pointer'></BsSuitHeart>
+                {!v.heart_count.includes(user) ? (
+                  <BsSuitHeart
+                    size="25px"
+                    onClick={() => {
+                      dispatch(heartPlusFB(v.id, user));
+                    }}
+                    cursor="pointer"
+                  ></BsSuitHeart>
                 ) : (
-                  <BsSuitHeartFill color="#FF66B2" size="25px"onClick={() => {
-                    setHeartcheck((prev) => !prev)
-                    dispatch(heartMinusFB(v.id,user))}} cursor='pointer'></BsSuitHeartFill>
+                  <BsSuitHeartFill
+                    color="#FF66B2"
+                    size="25px"
+                    onClick={() => {
+                      dispatch(heartMinusFB(v.id, user));
+                    }}
+                    cursor="pointer"
+                  ></BsSuitHeartFill>
                 )}
               </Bottom>
             </>
@@ -251,6 +282,7 @@ const Head = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font-size: large;
+  margin-top: 20px;
   & > label {
     width: 70px;
     position: relative;
@@ -273,7 +305,6 @@ const Layout = styled.div`
     text-align: center;
     word-break: break-all;
     width: 80%;
-    margin: 20px;
   }
   & > img {
     width: 400px;
@@ -290,7 +321,6 @@ const Layoutbottom = styled.div`
   & > p {
     word-break: break-all;
     width: 80%;
-    margin: 20px;
   }
   & > img {
     width: 100%;
@@ -309,5 +339,22 @@ const Bottom = styled.div`
     display: inline;
     margin: 10px;
   }
+`;
+
+const heartAnimation = keyframes`
+0%{
+  opacity: 0;
+}
+50%{
+  opacity: 1;
+}
+100%{
+  opacity: 0;
+  
+}
+`;
+const Heart = styled.div`
+  animation : ${heartAnimation} 2s  alternate;
+  /* display : none */
 `;
 export default Main;
