@@ -16,7 +16,7 @@ const Signup = () => {
   const signupFB = async () => {
     const isValidEmail =
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    const isValidPw = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
+    const isValidPw = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*#?&])[0-9a-zA-Z@$!%*#?&]{8,10}$/;
     if (
       isValidEmail.test(id.current.value) &&
       isValidPw.test(password.current.value)
@@ -66,7 +66,7 @@ const Signup = () => {
             type="password"
             required
           ></input>
-          <p>비밀번호는 8 ~ 10자 영문, 숫자 조합으로 입력해 주세요</p>
+          <p>비밀번호는 8 ~ 10자 영문, 숫자 및 특수문자조합으로 입력해 주세요</p>
         </Input>
         <Input>
           <label htmlFor="input-passwordcheck">비밀번호 확인</label>

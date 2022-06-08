@@ -20,6 +20,7 @@ import { async } from "@firebase/util";
 
 const LOAD = 'user/LOAD'
 const CREATE = 'user/CREATE'
+const RESET = 'user/RESET' 
 
 // initialState
 
@@ -35,7 +36,9 @@ export function loadUser(currentuser){
 export function createUser(user){
     return{type:CREATE, user} 
 }
-
+export function resetUser(){
+    return {type:RESET}
+}
 //middlewares
 
 export const loadUserFB = (user_id) => {
@@ -61,8 +64,9 @@ export const createUserFB = (user) => {
     return async function (dispatch) {
         const docRef = await addDoc(collection(db, "users"), user);
         const userlist = await getDoc(docRef);
-        const user_data = { id: userlist.id, ...userlist.data()};
-        dispatch(createUser(user_data));
+        const currentuser = userlist.data().name
+        // const user_data = { id: userlist.id, ...userlist.data()};
+        dispatch(createUser(currentuser));
       };
 }
 
@@ -72,8 +76,11 @@ export default function reducer (state=initialState, action={}){
             return{currentuser : action.currentuser}
         }
         case CREATE : {
-            const new_user_list = [...state.user_list, action.user]
-            return{user_list: new_user_list}
+            // const new_user_list = [...state.user_list, action.user]
+            return{currentuser : action.user}
+        }
+        case RESET : {
+            return{currentuser:''}
         }
         default :
         return state;
