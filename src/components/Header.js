@@ -5,9 +5,12 @@ import { IoHomeSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
+import Badge from "@mui/material/Badge";
+import MailIcon from "@mui/icons-material/Mail";
 
 const Header = ({ is_login }) => {
   const user = useSelector((state) => state.user.currentuser);
+  const notice = useSelector((state) => state.notice.notice_list)
   const navigate = useNavigate();
   return (
     <>
@@ -27,7 +30,10 @@ const Header = ({ is_login }) => {
         </Button>
       ) : (
         <Button>
-          <div>{user}</div>
+          <div style={{marginRight:'10px'}}>{user}</div>
+          <Badge badgeContent={notice.length} color="primary">
+            <MailIcon color="action" style={{cursor:'pointer'}} onClick={()=>{navigate('/notice')}}/>
+          </Badge>
           <button
             onClick={() => {
               signOut(auth);

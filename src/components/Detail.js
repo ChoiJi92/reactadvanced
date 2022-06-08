@@ -10,6 +10,7 @@ import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
 import { auth } from "../firebase";
 import Slide from "./Slide";
 import BottomSlide from "./BottomSlide";
+import { createNoticeFB } from "../redux/modules/notice";
 
 const Detail = ({ is_login }) => {
   const params = useParams();
@@ -74,7 +75,13 @@ const Detail = ({ is_login }) => {
                 size="25px"
                 onClick={() => {
                   setHeartCheck(true)
-                  dispatch(heartPlusFB(data[0].id, user_id));
+                  dispatch(heartPlusFB(data[0].id, user_id))
+                  if(data[0].user_id !== user_id){
+                  dispatch(createNoticeFB({
+                    user_id : data[0].user_id,
+                    notice : `${user}님이 게시글에 좋아요를 남겼습니다 :)`,
+                    id : data[0].id
+                  }))}
                 }}
                 cursor="pointer"
               ></BsSuitHeart>
@@ -84,7 +91,8 @@ const Detail = ({ is_login }) => {
                 size="25px"
                 onClick={() => {
                   setHeartCheck(false)
-                  dispatch(heartMinusFB(data[0].id, user_id));
+                  dispatch(heartMinusFB(data[0].id, user_id))
+                  
                 }}
                 cursor="pointer"
               ></BsSuitHeartFill>
@@ -114,7 +122,13 @@ const Detail = ({ is_login }) => {
                 size="25px"
                 onClick={() => {
                   setHeartCheck(true)
-                  dispatch(heartPlusFB(data[0].id, user_id));
+                  dispatch(heartPlusFB(data[0].id, user_id))
+                  if(data[0].user_id !== user_id){
+                    dispatch(createNoticeFB({
+                      user_id : data[0].user_id,
+                      notice : `${user}님이 게시글에 좋아요를 남겼습니다 :)`,
+                      id : data[0].id
+                    }))}
                 }}
                 cursor="pointer"
               ></BsSuitHeart>
@@ -154,7 +168,13 @@ const Detail = ({ is_login }) => {
                 size="25px"
                 onClick={() => {
                   setHeartCheck(true)
-                  dispatch(heartPlusFB(data[0].id, user_id));
+                  dispatch(heartPlusFB(data[0].id, user_id))
+                  if(data[0].user_id !== user_id){
+                    dispatch(createNoticeFB({
+                      user_id : data[0].user_id,
+                      notice : `${user}님이 게시글에 좋아요를 남겼습니다 :)`,
+                      id : data[0].id
+                    }))}
                 }}
                 cursor="pointer"
               ></BsSuitHeart>
@@ -175,11 +195,11 @@ const Detail = ({ is_login }) => {
       {is_login && (
         <>
           <input
-            value={comment}
+            value={comment || ''}
             onChange={onChange}
             placeholder="댓글 내용을 입력하세요  :)"
           ></input>
-          <Btn onClick={addcomment}>추가</Btn>
+          <Btn onClick={addcomment}>댓글 남기기</Btn>
         </>
       )}
       {isloaded && <Commentlist />}

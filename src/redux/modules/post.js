@@ -47,8 +47,8 @@ export function createPost(post) {
 export function updatePost(post) {
   return { type: UPDATE, post };
 }
-export function deletePost(id) {
-  return { type: UPDATE, id };
+export function deletePost(post) {
+  return { type: UPDATE, post };
 }
 export function countComment(post) {
   return { type: COMMENT_COUNT, post };
@@ -117,7 +117,7 @@ export const deletePostFB = (id) => {
     await deleteDoc(docRef);
     const post_list = getState().post.post_list;
     const new_post = post_list.filter((v) => v.id !== id);
-    dispatch(updatePost(new_post));
+    dispatch(deletePost(new_post));
   };
 };
 export const countFB = (id) => {

@@ -14,12 +14,14 @@ import {
   heartMinusFB,
 } from "../redux/modules/post";
 import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
+import { createNoticeFB } from "../redux/modules/notice";
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.post.post_list);
   const user = auth.currentUser?.email;
+  const user_name = useSelector((state)=> state.user.currentuser)
   const [heartCheck, setHeartCheck] = useState('')
   const lastdate = useSelector((state) => state.post.lastdate); // date를 기준으로 정렬해서 가져오기때문에 마지막 요소의 date를 알아야함
   const [target, setTarget] = useState(null);
@@ -95,7 +97,13 @@ const Main = () => {
                     size="25px"
                     onClick={() => {
                       setHeartCheck(v.id)
-                      dispatch(heartPlusFB(v.id, user));
+                      dispatch(heartPlusFB(v.id, user))
+                      if(v.user_id !== user){
+                        dispatch(createNoticeFB({
+                          user_id : v.user_id,
+                          notice : `${user_name}님이 게시글에 좋아요를 남겼습니다 :)`,
+                          id : v.id
+                        }))}
                     }}
                     cursor="pointer"
                   ></BsSuitHeart>
@@ -161,7 +169,13 @@ const Main = () => {
                     size="25px"
                     onClick={() => {
                       setHeartCheck(v.id)
-                      dispatch(heartPlusFB(v.id, user));
+                      dispatch(heartPlusFB(v.id, user))
+                      if(v.user_id !== user){
+                        dispatch(createNoticeFB({
+                          user_id : v.user_id,
+                          notice : `${user_name}님이 게시글에 좋아요를 남겼습니다 :)`,
+                          id : v.id
+                        }))}
                     }}
                     cursor="pointer"
                   ></BsSuitHeart>
@@ -227,7 +241,13 @@ const Main = () => {
                     size="25px"
                     onClick={() => {
                       setHeartCheck(v.id)
-                      dispatch(heartPlusFB(v.id, user));
+                      dispatch(heartPlusFB(v.id, user))
+                      if(v.user_id !== user){
+                        dispatch(createNoticeFB({
+                          user_id : v.user_id,
+                          notice : `${user_name}님이 게시글에 좋아요를 남겼습니다 :)`,
+                          id : v.id
+                        }))}
                     }}
                     cursor="pointer"
                   ></BsSuitHeart>

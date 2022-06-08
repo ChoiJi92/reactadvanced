@@ -42,23 +42,21 @@ const Update = () => {
     setFileList([...filelist])
   };
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
-  const updatecomment = async () => {
+  const updatepost = async () => {
     let realImage =[]
     for(let i = 0; i<fileList.length; i++){
     const uploaded_file = await uploadBytes(
         ref(storage, `images/${fileList[i].name}`),
         fileList[i]
       );
-      console.log(uploaded_file);
       const file_url = await getDownloadURL(uploaded_file.ref);
-      console.log(file_url);
       realImage.push(file_url)
     }
     await dispatch(
       updatePostFB({
         id: params.id,
         date: now,
-        image: realImage,
+        image: realImage.length!==0 ? realImage : image,
         comment: comments.current.value,
         user_id: auth.currentUser?.email,
         user_name: user,
@@ -141,7 +139,7 @@ const Update = () => {
           value={input}
         ></textarea>
       </Comment>
-      <Button disabled={!image || !layout || !posting ? true : false } onClick={updatecomment}>게시글 수정</Button>
+      <Button disabled={!image || !layout || !posting ? true : false } onClick={updatepost}>게시글 수정</Button>
     </Container>
   );
 };

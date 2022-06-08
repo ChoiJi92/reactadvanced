@@ -40,7 +40,7 @@ export function createComment(comment) {
 export const loadCommentFB = (id) => {
   return async function (dispatch) {
     try {
-      const q = query(collection(db, "comment"), where("id", "==", id));
+      const q = query(collection(db, "comment"), where("id", "==", id),orderBy('date','desc'));
       const comment_data = await getDocs(q);
       let comment_list = [];
       // let lastdate ;

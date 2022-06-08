@@ -5,6 +5,7 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loadUserFB } from "../redux/modules/user";
+import { loadNoticeFB } from "../redux/modules/notice";
 
 const Login = () => {
     // const id = React.useRef()
@@ -21,7 +22,7 @@ const Login = () => {
             password
         )
         await dispatch(loadUserFB(auth.currentUser?.email));
-            console.log(user)
+        await dispatch(loadNoticeFB(auth.currentUser?.email));
             navigate('/')
         }
         catch(err){

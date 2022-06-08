@@ -11,6 +11,7 @@ import Signup from "./Signup";
 import Write from "./Write";
 import Update from "./Update";
 import Error from "./Error";
+import Notice from "./Notice";
 
 
 import { auth } from "../firebase";
@@ -19,6 +20,7 @@ import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loadPostFB } from "../redux/modules/post";
 import { loadUserFB } from "../redux/modules/user";
+import { loadNoticeFB } from "../redux/modules/notice";
 
 
 
@@ -42,6 +44,7 @@ function App() {
     async function load() {
       await dispatch(loadPostFB());
       await dispatch(loadUserFB(auth.currentUser?.email));
+      await dispatch(loadNoticeFB(auth.currentUser?.email));
       setIsloaded(true);
     }
     load();
@@ -62,6 +65,7 @@ function App() {
           path="/detail/:id"
           element={is_loaded && <Detail is_login={is_login} />}
         ></Route>
+        <Route path='/notice' element={is_loaded && <Notice />}></Route>
       </Routes>
     </div>
   );
