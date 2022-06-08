@@ -115,6 +115,9 @@ export const deletePostFB = (id) => {
   return async function (dispatch, getState) {
     const docRef = doc(db, "post", id);
     await deleteDoc(docRef);
+    const q = query(collection(db, "comment"), where("id", "==", id))
+    const data = await getDocs(q)
+    data.docs.map(v => deleteDoc(v.ref))  //해당 포스트의 comment도 삭제해주기!!
     const post_list = getState().post.post_list;
     const new_post = post_list.filter((v) => v.id !== id);
     dispatch(deletePost(new_post));

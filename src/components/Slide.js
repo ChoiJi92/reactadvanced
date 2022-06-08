@@ -16,7 +16,7 @@ const Slide = ({data}) => {
     <Container>
       <Slider {...settings}>
         {data.map((v) => {
-          return <Image src={v} ></Image>;
+          return <Image key={v} src={v} ></Image>;
         })}
       </Slider>
     </Container>
