@@ -144,7 +144,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
   padding: 20px;
   margin: 20px auto;
   width: 80%;
@@ -156,6 +155,7 @@ const Head = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   font-size: large;
   margin-bottom: 20px;
   & > label {

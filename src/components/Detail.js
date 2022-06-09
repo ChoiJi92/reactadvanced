@@ -21,6 +21,11 @@ const Detail = ({ is_login }) => {
   const data = useSelector((state) => state.post.post_list).filter(
     (v) => v.id === params.id
   );
+  const onKeyPress = (e) => {
+    if(e.key ==='Enter'){
+      addcomment()
+    }
+}
   const onChange = (e) => {
     setComment(e.target.value);
   };
@@ -198,6 +203,7 @@ const Detail = ({ is_login }) => {
             value={comment || ''}
             onChange={onChange}
             placeholder="댓글 내용을 입력하세요  :)"
+            onKeyDown={onKeyPress}
           ></input>
           <Btn onClick={addcomment}>댓글 남기기</Btn>
         </>
@@ -291,9 +297,9 @@ const heartAnimation = keyframes`
 0%{
   opacity: 0;
 }
-40%{
+20%{
   opacity: 1;
-  color: red;
+  color: #FF66B2;
 }
 100%{
   opacity: 0;

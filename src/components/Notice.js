@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { auth } from "../firebase";
-import { deleteNoticeFB, loadNoticeFB } from "../redux/modules/notice";
+import { deleteNoticeFB} from "../redux/modules/notice";
 
 const Notice = () => {
   const data = useSelector((state) => state.notice.notice_list);

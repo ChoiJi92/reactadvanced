@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase";
-import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
 import { useSelector, useDispatch } from "react-redux";
 import styled, { keyframes } from "styled-components";
-import { loadCommentFB } from "../redux/modules/comment";
 import {
   deletePostFB,
   moreloadPostFB,
@@ -397,7 +395,7 @@ const Bottom = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
   p {
     display: inline;
     margin: 10px;
@@ -424,6 +422,7 @@ const Heart = styled.div`
     position: absolute;
     left: 5%;
     bottom: 0;
+    z-index: 1;
   }
 `;
 export default Main;

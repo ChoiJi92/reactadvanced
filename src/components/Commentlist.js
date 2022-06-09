@@ -7,10 +7,10 @@ const Commentlist = () => {
   return (
     <Comment>
       {comment_list.map((v) => (
-        <List>
+        <List key={v.date}>
           <p style={{width:'10%'}}>{v.user_name}</p>
           <p style={{width:'50%', textAlign:'center'}}>{v.comment}</p>
-          <p>{v.date}</p>
+          <p >{v.date}</p>
         </List>
       ))}
     </Comment>

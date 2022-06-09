@@ -27,11 +27,13 @@ const COMMENT_COUNT = "post/COMMENT_COUNT";
 const HEART_PLUS = "post/HEART_PLUS";
 const HEART_MINUS = "post/HEART_MINUS";
 
+
 // initialState
 
 const initialState = {
   post_list: [],
   lastdate: 0,
+  current_post:[]
 };
 //action creator
 
@@ -93,7 +95,6 @@ export const moreloadPostFB = (lastdate) => {
     dispatch(moreloadPost(post_list, lastDate));
   };
 };
-
 export const createPostFB = (post) => {
   return async function (dispatch) {
     const docRef = await addDoc(collection(db, "post"), post);

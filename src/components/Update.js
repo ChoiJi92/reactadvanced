@@ -160,6 +160,7 @@ const Head = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   font-size: large;
   margin-bottom: 20px;
   & > label {
