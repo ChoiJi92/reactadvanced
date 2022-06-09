@@ -48,7 +48,7 @@ const Login = () => {
         </Input>
         <Input>
           <label htmlFor="input-password">비밀번호</label>
-          <input  id="input-password" type='password' onKeyDown={onKeyPress} onChange={(e)=>{
+          <input  id="input-password" type='password' onKeyPress={onKeyPress} onChange={(e)=>{
             setPassword(e.target.value)}} placeholder="비밀번호를 입력해 주세요!" required></input>
         </Input>
        <Button disabled={id ==='' || password === "" ? true : false} onClick={loginFB}>로그인</Button>

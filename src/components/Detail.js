@@ -203,7 +203,7 @@ const Detail = ({ is_login }) => {
             value={comment || ''}
             onChange={onChange}
             placeholder="댓글 내용을 입력하세요  :)"
-            onKeyDown={onKeyPress}
+            onKeyPress={onKeyPress}
           ></input>
           <Btn onClick={addcomment}>댓글 남기기</Btn>
         </>
